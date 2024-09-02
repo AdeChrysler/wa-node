@@ -6,7 +6,7 @@ const axios = require('axios');
 
 const app = express();
 const port = process.env.PORT || 3000;
-const n8nWebhookUrl = 'https://your-n8n-webhook-url'; // Replace with your n8n webhook URL
+const n8nWebhookUrl = 'https://automation.kuut.us/webhook-test/2a4b0138-8604-4f77-8e1a-be2cdd548abd'; // Replace with your n8n webhook URL
 
 // Middleware
 app.use(bodyParser.json());
