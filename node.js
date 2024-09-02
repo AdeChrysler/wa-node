@@ -1,36 +1,30 @@
 const { Client, LocalAuth } = require('whatsapp-web.js');
 const express = require('express');
 const bodyParser = require('body-parser');
-const qrcode = require('qrcode-terminal');
-const path = require('path');
-const fs = require('fs');
+const axios = require('axios');
 
 const app = express();
 app.use(bodyParser.json());
-app.use(express.static('public'));
 
 const client = new Client({
     authStrategy: new LocalAuth(),
 });
 
-client.on('qr', qr => {
-    // Generate and save QR code to a file
-    qrcode.generate(qr, { small: true }, qrCode => {
-        fs.writeFileSync(path.join(__dirname, 'public', 'qrcode.txt'), qrCode);
-    });
-});
-
 client.on('message', async message => {
     console.log(`Received message: ${message.body}`);
 
-    // Trigger your N8N webhook
-    await axios.post('YOUR_N8N_WEBHOOK_URL', {
+    // Trigger your N8 webhook
+    await axios.post('https://automation.kuut.us/webhook-test/2a4b0138-8604-4f77-8e1a-be2cdd548abd', {
         message: message.body,
         from: message.from
     });
 
     // Send a reply
     message.reply('Message received!');
+});
+
+client.on('qr', qr => {
+    console.log('QR RECEIVED', qr);
 });
 
 client.on('ready', () => {
